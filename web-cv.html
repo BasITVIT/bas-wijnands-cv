@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bas Wijnands — System &amp; Network Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ===== VARIABLES & RESET ===== */
+    :root {
+      --bg: #0A1628;
+      --navy: #0F1B2D;
+      --cyan: #00C2CB;
+      --orange: #FF6B35;
+      --white: #FFFFFF;
+      --sub: rgba(255,255,255,0.65);
+      --font: 'Inter', Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--bg); color: var(--white); line-height: 1.6; }
+    .section { padding: 6rem 2rem; }
+    .section-dark { background: var(--navy); }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .section-title { font-size: 2rem; font-weight: 800; margin-bottom: 3rem; position: relative; }
+    .section-title::after { content: ''; display: block; width: 50px; height: 3px; background: var(--cyan); margin-top: 0.5rem; }
+    strong { color: var(--cyan); font-weight: 700; }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ===== HERO ===== */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    #hero-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .hero-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      color: var(--cyan);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero-name {
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 800;
+      color: var(--white);
+      min-height: 1.2em;
+      line-height: 1.1;
+    }
+
+    #tw-cursor {
+      display: inline-block;
+      width: 3px;
+      background: var(--cyan);
+      margin-left: 4px;
+      animation: blink 0.8s step-end infinite;
+      vertical-align: baseline;
+      height: 0.85em;
+      position: relative;
+      top: 0.05em;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .hero-sub {
+      color: rgba(255,255,255,0.7);
+      font-size: 1.1rem;
+      margin: 1.5rem 0 2rem;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    .hero-sub.visible { opacity: 1; }
+
+    .hero-cta {
+      display: inline-block;
+      border: 2px solid var(--cyan);
+      color: var(--cyan);
+      padding: 0.8rem 2rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background 0.3s, color 0.3s;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease 2.5s forwards;
+    }
+
+    .hero-cta:hover {
+      background: var(--cyan);
+      color: var(--bg);
+      text-decoration: none;
+    }
+
+    .hero-cta span { margin-left: 0.4rem; }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      width: 20px;
+      height: 35px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 5px;
+      animation: bounce 2s ease infinite;
+    }
+
+    .scroll-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+      animation: scrollDown 2s ease infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    @keyframes scrollDown {
+      0% { transform: translateY(0); opacity: 1; }
+      80% { transform: translateY(14px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 0; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== NAVBAR ===== */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(10,22,40,0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transform: translateY(-100%);
+      transition: transform 0.3s ease;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    #navbar.visible { transform: translateY(0); }
+
+    .nav-logo {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--cyan);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.8);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--cyan); text-decoration: none; }
+
+    .nav-contact a {
+      color: var(--sub);
+      font-size: 0.85rem;
+    }
+
+    .nav-contact a:hover { color: var(--cyan); }
+
+    /* ===== OVER MIJ ===== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-photo {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      flex-shrink: 0;
+    }
+
+    .about-photo img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--cyan);
+      display: block;
+    }
+
+    .photo-fallback {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy), rgba(0,194,203,0.2));
+      border: 3px solid var(--cyan);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+
+    .about-text p {
+      color: var(--sub);
+      font-size: 1.05rem;
+      margin-bottom: 2rem;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--cyan);
+      line-height: 1;
+    }
+
+    .stat-plus {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--sub);
+      margin-top: 0.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .contact-row a,
+    .contact-row span {
+      color: var(--sub);
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .contact-row a:hover { color: var(--cyan); }
+
+    /* ===== TIMELINE ===== */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--orange);
+      border-radius: 2px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -2.6rem;
+      top: 1.5rem;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--navy);
+      border: 3px solid var(--cyan);
+    }
+
+    .timeline-card {
+      background: #0F1B2D;
+      border-radius: 12px;
+      padding: 1.5rem;
+      border-left: 3px solid transparent;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .timeline-card:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    }
+
+    .timeline-card.current {
+      border-left: 3px solid var(--cyan);
+      box-shadow: 0 0 20px rgba(0,194,203,0.15);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.2rem;
+    }
+
+    .card-company {
+      color: var(--cyan);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .card-period {
+      color: var(--orange);
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .card-bullets {
+      list-style: none;
+      padding: 0;
+    }
+
+    .card-bullets li {
+      color: var(--sub);
+      font-size: 0.9rem;
+      padding: 0.2rem 0 0.2rem 1.2rem;
+      position: relative;
+    }
+
+    .card-bullets li::before {
+      content: '▸';
+      color: var(--orange);
+      position: absolute;
+      left: 0;
+    }
+
+    /* ===== FADE-IN ANIMATION ===== */
+    .fade-in-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .fade-in-right.animated {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ===== SKILLS ===== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .skills-sub {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tech-tag {
+      border: 1px solid rgba(0,194,203,0.4);
+      color: var(--cyan);
+      background: rgba(0,194,203,0.08);
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      transition: background 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+
+    .tech-tag:hover {
+      background: rgba(0,194,203,0.2);
+      box-shadow: 0 0 8px rgba(0,194,203,0.3);
+    }
+
+    .soft-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .soft-pill {
+      background: rgba(255,107,53,0.15);
+      color: var(--orange);
+      border: 1px solid rgba(255,107,53,0.4);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .lang-item {
+      margin-bottom: 1.2rem;
+    }
+
+    .lang-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.4rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .lang-track {
+      background: rgba(255,255,255,0.1);
+      height: 6px;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .lang-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), rgba(0,194,203,0.6));
+      border-radius: 3px;
+      width: 0;
+      transition: width 1.2s ease;
+    }
+
+    /* ===== OPLEIDING ===== */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .edu-card {
+      background: #0F1B2D;
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .edu-card:hover { transform: translateY(-4px); }
+
+    .cert-highlight {
+      border-color: rgba(0,194,203,0.5);
+      box-shadow: 0 0 15px rgba(0,194,203,0.1);
+    }
+
+    .edu-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .edu-degree {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .edu-school {
+      color: var(--sub);
+      font-size: 0.85rem;
+    }
+
+    .edu-year {
+      color: var(--orange);
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-top: 0.4rem;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: #060E1C;
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+
+    .footer-title {
+      color: var(--cyan);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--sub);
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--cyan); text-decoration: none; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+      .about-photo {
+        margin: 0 auto;
+      }
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-contact { display: none; }
+      .nav-links { gap: 1rem; }
+      .stats-row { gap: 1rem; }
+      .card-header { flex-direction: column; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HERO ===== -->
+  <section id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <div class="hero-label">SYSTEM &amp; NETWORK ENGINEER</div>
+      <h1 class="hero-name" id="typewriter"></h1>
+      <p class="hero-sub" id="hero-sub">Netwerk engineer bij KPN &middot; 10+ jaar ervaring &middot; CCNA gecertificeerd</p>
+      <a href="#over-mij" class="hero-cta">Bekijk mijn profiel <span>&#x2193;</span></a>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-dot"></div>
+    </div>
+  </section>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav id="navbar">
+    <div class="nav-logo">BW</div>
+    <ul class="nav-links">
+      <li><a href="#over-mij">Over mij</a></li>
+      <li><a href="#ervaring">Ervaring</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#opleiding">Opleiding</a></li>
+    </ul>
+    <div class="nav-contact">
+      <a href="mailto:bas.wijnands@itvit.nl">bas.wijnands@itvit.nl</a>
+    </div>
+  </nav>
+
+  <!-- ===== OVER MIJ ===== -->
+  <section id="over-mij" class="section">
+    <div class="container">
+      <h2 class="section-title">Over mij</h2>
+      <div class="about-grid">
+        <div class="about-photo">
+          <img src="foto.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="Bas Wijnands">
+          <div class="photo-fallback">BW</div>
+        </div>
+        <div class="about-text">
+          <p>Netwerk engineer bij KPN met meer dan 10 jaar ervaring in enterprise-netwerken, cloud en datacenters. Betrokken bij migraties voor <strong>2500 locaties</strong> in de Benelux en infrastructuurprojecten bij bedrijven in uiteenlopende sectoren. CCNA-gecertificeerd, vertrouwd met Fortinet, Cisco Meraki en Azure.</p>
+          <div class="stats-row">
+            <div class="stat">
+              <div><span class="stat-num" data-target="10">0</span><span class="stat-plus">+</span></div>
+              <div class="stat-label">jaar ervaring</div>
+            </div>
+            <div class="stat">
+              <div><span class="stat-num" data-target="6">0</span></div>
+              <div class="stat-label">werkgevers</div>
+            </div>
+            <div class="stat">
+              <div><span class="stat-num" data-target="2500">0</span></div>
+              <div class="stat-label">locaties gemigreerd</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label" style="font-size:1.5rem;font-weight:800;color:var(--cyan);margin-top:0">CCNA</div>
+              <div class="stat-label">gecertificeerd</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <a href="mailto:bas.wijnands@itvit.nl">&#x2709; bas.wijnands@itvit.nl</a>
+            <a href="tel:+31683569318">&#x260E; +31 6 835 693 18</a>
+            <a href="https://linkedin.com/in/bas-w-839829189" target="_blank">in LinkedIn</a>
+            <span>&#x2316; Noordwijk</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WERKERVARING ===== -->
+  <section id="ervaring" class="section section-dark">
+    <div class="container">
+      <h2 class="section-title">Werkervaring</h2>
+      <div class="timeline">
+
+        <!-- 1: KPN -->
+        <div class="timeline-item fade-in-right">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card current">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Netwerk Engineer</div>
+                <div class="card-company">KPN, Zoetermeer</div>
+              </div>
+              <div class="card-period">2023 &ndash; heden</div>
+            </div>
+            <ul class="card-bullets">
+              <li>Opstellen en bijhouden van netwerkdocumentatie en HLD/LLD diagrammen</li>
+              <li>Ontwerp en implementatie van OSPF, VRRP, VLANs en SNMP-monitoring</li>
+              <li>Beheer van interne netwerken voor KPN-klanten</li>
+              <li>Datacenter onderhoud met Fortinet en Cisco Meraki infrastructuur</li>
+              <li>Bijgedragen aan meer dan 10% verbetering in implementatie-effici&euml;ntie</li>
+              <li>Betrokken bij migraties van <strong>2500 locaties</strong> in de Benelux</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 2: Varo Energy -->
+        <div class="timeline-item fade-in-right">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Global Infrastructure Specialist | Freelance</div>
+                <div class="card-company">Varo Energy, Rotterdam</div>
+              </div>
+              <div class="card-period">2022 &ndash; 2023</div>
+            </div>
+            <ul class="card-bullets">
+              <li>Beheer en ondersteuning van Office 365-omgeving</li>
+              <li>Remote Desktop Services via VMware voor internationale gebruikers</li>
+              <li>Implementatie en beheer van Cisco Meraki en Fortinet firewalls</li>
+              <li>Windows Server 2019/2016 infrastructuurbeheer</li>
+              <li>Azure Cloud beheer en migraties</li>
+              <li>ITIL-processen via Topdesk en Jira</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 3: Hoyng Rokh Monegier -->
+        <div class="timeline-item fade-in-right">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Netwerk Specialist | Freelance</div>
+                <div class="card-company">Hoyng Rokh Monegier, Amsterdam</div>
+              </div>
+              <div class="card-period">2021 &ndash; 2022</div>
+            </div>
+            <ul class="card-bullets">
+              <li>Datacenterontwerp met meer dan 30% uitbreiding van rackruimte</li>
+              <li>HLD/LLD-documentatie voor cloudinfrastructuur</li>
+              <li>Optimalisatie van netwerkprestaties en uptime</li>
+              <li>Beheer van routers, switches en firewalls</li>
+              <li>Samenwerking met IT-management over budget en planning</li>
+              <li>Training en begeleiding van technisch personeel</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 4: GoFlow Technology -->
+        <div class="timeline-item fade-in-right">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Manager IT Infrastructure</div>
+                <div class="card-company">GoFlow Technology, Sassenheim</div>
+              </div>
+              <div class="card-period">2020 &ndash; 2021</div>
+            </div>
+            <ul class="card-bullets">
+              <li>IT-infrastructuur from scratch opgebouwd</li>
+              <li>Migratie van Office 365 naar Google Workspace</li>
+              <li>Implementatie Azure, RDS en Unifi-netwerken</li>
+              <li>Endpoint management via Intune en SCCM</li>
+              <li>Monitoring opgezet met Zabbix</li>
+              <li>IT-team aangestuurd en gecoacht</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 5: Plugwise -->
+        <div class="timeline-item fade-in-right">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Teamleider Installatie &amp; Service | Sysadmin</div>
+                <div class="card-company">Plugwise, Sassenheim</div>
+              </div>
+              <div class="card-period">2019 &ndash; 2020</div>
+            </div>
+            <ul class="card-bullets">
+              <li>Installatie- en serviceteam aangestuurd</li>
+              <li>Migratie Office 365 naar Google Workspace</li>
+              <li>Klantcontact en technische ondersteuning op hoog niveau</li>
+              <li>Beheer Google Workspace, Azure, Intune en SCCM</li>
+              <li>RDS- en Unifi-infrastructuur beheerd</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 6: PWA Computers -->
+        <div class="timeline-item fade-in-right">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Technical Service Engineer</div>
+                <div class="card-company">PWA Computers, Noordwijkerhout</div>
+              </div>
+              <div class="card-period">2016 &ndash; 2019</div>
+            </div>
+            <ul class="card-bullets">
+              <li>2e-lijnssupport voor hardware en software problemen</li>
+              <li>Office 365-beheer en gebruikersondersteuning</li>
+              <li>Netwerkmonitoring en proactief beheer</li>
+              <li>Backup- en herstelbeheer via Veeam</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS ===== -->
+  <section id="skills" class="section">
+    <div class="container">
+      <h2 class="section-title">Skills</h2>
+      <div class="skills-grid">
+        <div>
+          <h3 class="skills-sub">Software &amp; Technologie</h3>
+          <div class="tech-tags">
+            <span class="tech-tag">Access points</span>
+            <span class="tech-tag">Amazon AWS</span>
+            <span class="tech-tag">Azure</span>
+            <span class="tech-tag">BGP</span>
+            <span class="tech-tag">Cisco</span>
+            <span class="tech-tag">Cloud infrastructure</span>
+            <span class="tech-tag">Datacenter</span>
+            <span class="tech-tag">Firewalls</span>
+            <span class="tech-tag">Fortinet</span>
+            <span class="tech-tag">IT Infrastructure</span>
+            <span class="tech-tag">Jira</span>
+            <span class="tech-tag">Network diagrams</span>
+            <span class="tech-tag">Office 365</span>
+            <span class="tech-tag">OSPF</span>
+            <span class="tech-tag">SNMP</span>
+            <span class="tech-tag">Topdesk</span>
+            <span class="tech-tag">User Management</span>
+            <span class="tech-tag">Veeam</span>
+            <span class="tech-tag">Visio</span>
+            <span class="tech-tag">VLANs</span>
+            <span class="tech-tag">VPN</span>
+            <span class="tech-tag">VRRP</span>
+            <span class="tech-tag">Windows Server 2019</span>
+            <span class="tech-tag">Wireless</span>
+            <span class="tech-tag">Zabbix</span>
+          </div>
+
+          <h3 class="skills-sub" style="margin-top:2rem">Vaardigheden</h3>
+          <div class="soft-skills">
+            <span class="soft-pill">Proactief</span>
+            <span class="soft-pill">Probleemoplossend</span>
+            <span class="soft-pill">Communicatief vaardig</span>
+            <span class="soft-pill">Betrouwbaar</span>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="skills-sub">Talen</h3>
+          <div class="lang-item">
+            <div class="lang-header">
+              <span>Nederlands</span><span>100%</span>
+            </div>
+            <div class="lang-track">
+              <div class="lang-bar" data-width="100"></div>
+            </div>
+          </div>
+          <div class="lang-item">
+            <div class="lang-header">
+              <span>Engels</span><span>80%</span>
+            </div>
+            <div class="lang-track">
+              <div class="lang-bar" data-width="80"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== OPLEIDING ===== -->
+  <section id="opleiding" class="section section-dark">
+    <div class="container">
+      <h2 class="section-title">Opleiding &amp; Certificeringen</h2>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <div class="edu-icon">&#x1F393;</div>
+          <div class="edu-degree">HBO Bachelor ICT</div>
+          <div class="edu-school">LOI, Leiden</div>
+          <div class="edu-year">2023</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-icon">&#x1F393;</div>
+          <div class="edu-degree">MBO ICT Level 3</div>
+          <div class="edu-school">Leiden</div>
+          <div class="edu-year">2018 &ndash; 2020</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-icon">&#x1F393;</div>
+          <div class="edu-degree">VMBO Basis</div>
+          <div class="edu-school">Andreas College, Katwijk</div>
+        </div>
+        <div class="edu-card cert-highlight">
+          <div class="edu-icon">&#x1F3C6;</div>
+          <div class="edu-degree">Cisco CCNA</div>
+          <div class="edu-school">Global Knowledge</div>
+          <div class="edu-year">Vernieuwd feb. 2026</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-icon">&#x2713;</div>
+          <div class="edu-degree">ITIL 4 Foundation</div>
+          <div class="edu-year">2023</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-name">Bas Wijnands</div>
+      <div class="footer-title">System &amp; Network Engineer</div>
+      <div class="footer-links">
+        <a href="mailto:bas.wijnands@itvit.nl">bas.wijnands@itvit.nl</a>
+        <a href="https://linkedin.com/in/bas-w-839829189" target="_blank">LinkedIn</a>
+        <a href="cv.html">Download CV (PDF)</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ===== 1. CANVAS NETWORK ANIMATION =====
+    (function() {
+      var canvas = document.getElementById('hero-canvas');
+      var ctx = canvas.getContext('2d');
+      var W, H, nodes;
+      var NODE_COUNT = 60;
+      var MAX_DIST = 130;
+
+      function resize() {
+        W = canvas.width = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+      }
+
+      function randomBetween(min, max) {
+        return min + Math.random() * (max - min);
+      }
+
+      function initNodes() {
+        nodes = [];
+        for (var i = 0; i < NODE_COUNT; i++) {
+          nodes.push({
+            x: randomBetween(0, W),
+            y: randomBetween(0, H),
+            vx: randomBetween(-0.3, 0.3),
+            vy: randomBetween(-0.3, 0.3),
+            r: randomBetween(2, 3)
+          });
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        for (var i = 0; i < nodes.length; i++) {
+          var n = nodes[i];
+          n.x += n.vx;
+          n.y += n.vy;
+          if (n.x < 0 || n.x > W) { n.vx *= -1; n.x = Math.max(0, Math.min(W, n.x)); }
+          if (n.y < 0 || n.y > H) { n.vy *= -1; n.y = Math.max(0, Math.min(H, n.y)); }
+        }
+
+        for (var i = 0; i < nodes.length; i++) {
+          for (var j = i + 1; j < nodes.length; j++) {
+            var dx = nodes[i].x - nodes[j].x;
+            var dy = nodes[i].y - nodes[j].y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < MAX_DIST) {
+              var alpha = (1 - dist / MAX_DIST) * 0.2;
+              ctx.beginPath();
+              ctx.strokeStyle = 'rgba(0,194,203,' + alpha + ')';
+              ctx.lineWidth = 1;
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[j].x, nodes[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        for (var i = 0; i < nodes.length; i++) {
+          ctx.beginPath();
+          ctx.arc(nodes[i].x, nodes[i].y, nodes[i].r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0,194,203,0.7)';
+          ctx.fill();
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', function() {
+        resize();
+        initNodes();
+      });
+
+      resize();
+      initNodes();
+      draw();
+    })();
+
+    // ===== 2. TYPEWRITER EFFECT =====
+    (function() {
+      var el = document.getElementById('typewriter');
+      var heroSub = document.getElementById('hero-sub');
+      var name = 'Bas Wijnands';
+      var i = 0;
+
+      var cursor = document.createElement('span');
+      cursor.id = 'tw-cursor';
+      cursor.style.cssText = 'display:inline-block;width:3px;background:#00C2CB;margin-left:4px;animation:blink 0.8s step-end infinite;vertical-align:baseline;height:0.85em;position:relative;top:0.05em;';
+      el.appendChild(cursor);
+
+      function type() {
+        if (i < name.length) {
+          var textNode = document.createTextNode(name[i]);
+          el.insertBefore(textNode, cursor);
+          i++;
+          setTimeout(type, 80);
+        } else {
+          setTimeout(function() {
+            heroSub.classList.add('visible');
+          }, 300);
+        }
+      }
+
+      setTimeout(type, 500);
+    })();
+
+    // ===== 3. NAVBAR SCROLL =====
+    (function() {
+      var navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 80) {
+          navbar.classList.add('visible');
+        } else {
+          navbar.classList.remove('visible');
+        }
+      }, { passive: true });
+    })();
+
+    // ===== 4. INTERSECTION OBSERVERS =====
+    (function() {
+      // Fade-in-right for timeline items
+      var fadeItems = document.querySelectorAll('.fade-in-right');
+      var fadeObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry, idx) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            setTimeout(function() {
+              el.classList.add('animated');
+            }, idx * 100);
+            fadeObs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      fadeItems.forEach(function(el) { fadeObs.observe(el); });
+
+      // Count-up for stats
+      function easeOutQuart(t) {
+        return 1 - Math.pow(1 - t, 4);
+      }
+
+      function animateCount(el) {
+        var target = parseInt(el.getAttribute('data-target'), 10);
+        var duration = 1500;
+        var start = performance.now();
+
+        function update(now) {
+          var elapsed = now - start;
+          var progress = Math.min(elapsed / duration, 1);
+          var eased = easeOutQuart(progress);
+          el.textContent = Math.round(eased * target);
+          if (progress < 1) { requestAnimationFrame(update); }
+        }
+
+        requestAnimationFrame(update);
+      }
+
+      var statNums = document.querySelectorAll('.stat-num[data-target]');
+      var statObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            animateCount(entry.target);
+            statObs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      statNums.forEach(function(el) { statObs.observe(el); });
+
+      // Language bar animation
+      var langBars = document.querySelectorAll('.lang-bar[data-width]');
+      var langObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.style.width = entry.target.getAttribute('data-width') + '%';
+            langObs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      langBars.forEach(function(el) { langObs.observe(el); });
+    })();
+  </script>
+</body>
+</html>
