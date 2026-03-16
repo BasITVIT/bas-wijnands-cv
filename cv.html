@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bas Wijnands — System &amp; Network Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:   #0F1B2D;
+      --cyan:   #00C2CB;
+      --orange: #FF6B35;
+      --white:  #FFFFFF;
+      --dark:   #1A1A2E;
+      --bg:     #F5F5F5;
+      --font:   'Inter', Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--dark);
+      font-size: 0.875rem;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .cv-wrapper {
+      display: grid;
+      grid-template-columns: 30% 70%;
+      min-height: 297mm;
+      width: 210mm;
+      margin: 0 auto;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+      background: var(--white);
+      align-items: start;
+    }
+
+    /* ── LEFT COLUMN ── */
+    .col-left {
+      background: var(--navy);
+      color: var(--white);
+      padding: 2rem 1.5rem;
+      clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
+      min-height: 100%;
+    }
+
+    /* ── RIGHT COLUMN ── */
+    .col-right {
+      background: var(--white);
+      padding: 2rem 2rem 2rem 2.5rem;
+    }
+
+    /* ── PHOTO ── */
+    .foto-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .foto {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--cyan);
+    }
+    .foto-fallback {
+      display: none;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--cyan);
+      color: var(--white);
+      font-size: 2rem;
+      font-weight: 700;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid var(--cyan);
+    }
+
+    /* ── SECTION TITLES ── */
+    .section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+      border-bottom: 1px solid rgba(0, 194, 203, 0.3);
+      padding-bottom: 0.4rem;
+      margin: 1.2rem 0 0.8rem;
+    }
+    .col-right .section-title {
+      color: var(--dark);
+      border-bottom: 2px solid var(--cyan);
+      font-size: 0.72rem;
+    }
+
+    /* ── CONTACT / PERSONALIA ── */
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      margin-bottom: 0.4rem;
+      word-break: break-all;
+    }
+    .contact-item a {
+      color: var(--white);
+      text-decoration: none;
+    }
+    .contact-item a:hover { text-decoration: underline; }
+    .contact-icon {
+      color: var(--cyan);
+      font-size: 0.75rem;
+      margin-top: 0.1rem;
+      flex-shrink: 0;
+    }
+
+    /* ── EDUCATION ── */
+    .edu-item { margin-bottom: 0.8rem; }
+    .edu-degree { font-weight: 600; font-size: 0.8rem; }
+    .edu-school { font-size: 0.75rem; opacity: 0.85; }
+    .edu-year { font-size: 0.72rem; color: var(--cyan); margin-top: 0.1rem; }
+
+    /* ── LANGUAGES ── */
+    .lang-item { margin-bottom: 0.6rem; }
+    .lang-name { font-size: 0.78rem; margin-bottom: 0.25rem; }
+    .lang-bar { display: flex; gap: 4px; }
+    .lang-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.2);
+    }
+    .lang-dot.filled { background: var(--cyan); }
+
+    /* ── SOFT SKILLS ── */
+    .skill-list { list-style: none; padding: 0; }
+    .skill-list li {
+      font-size: 0.78rem;
+      padding: 0.2rem 0 0.2rem 0.8rem;
+      position: relative;
+    }
+    .skill-list li::before {
+      content: '▪';
+      color: var(--orange);
+      position: absolute;
+      left: 0;
+    }
+
+    /* ── TECH TAGS ── */
+    .tech-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tag {
+      background: rgba(0, 194, 203, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 194, 203, 0.35);
+      border-radius: 3px;
+      padding: 2px 6px;
+      font-size: 0.68rem;
+      font-weight: 600;
+    }
+
+    /* ── RIGHT COLUMN HEADER ── */
+    .cv-name {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .cv-name span { color: var(--cyan); }
+    .cv-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0.3rem 0 1rem;
+    }
+    .profile-text {
+      font-size: 0.85rem;
+      color: #444;
+      line-height: 1.6;
+      border-left: 3px solid var(--cyan);
+      padding-left: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── WORK EXPERIENCE ── */
+    .werk-section { margin-bottom: 0.2rem; }
+    .werk-item {
+      margin-bottom: 1.1rem;
+      page-break-inside: avoid;
+    }
+    .werk-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .werk-functie {
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--dark);
+    }
+    .werk-periode {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--orange);
+      white-space: nowrap;
+    }
+    .werk-bedrijf {
+      font-size: 0.78rem;
+      color: var(--cyan);
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+    .werk-bullets { list-style: none; padding: 0; }
+    .werk-bullets li {
+      font-size: 0.78rem;
+      color: #333;
+      padding: 0.15rem 0 0.15rem 1rem;
+      position: relative;
+      line-height: 1.45;
+    }
+    .werk-bullets li::before {
+      content: '▸';
+      color: var(--orange);
+      position: absolute;
+      left: 0;
+    }
+    .werk-bullets li strong {
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      @page { size: A4; margin: 0; }
+
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      body {
+        background: none;
+        margin: 0;
+        padding: 0;
+        display: block;
+      }
+
+      .cv-wrapper {
+        margin: 0;
+        box-shadow: none;
+        width: 210mm;
+        min-height: 297mm;
+      }
+
+      .col-left {
+        clip-path: none;
+        border-right: 4px solid var(--cyan);
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+      }
+
+      .werk-item { page-break-inside: avoid; }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cv-wrapper">
+
+    <!-- ══════════════════════════════ LEFT COLUMN ══════════════════════════════ -->
+    <aside class="col-left">
+
+      <!-- FOTO -->
+      <div class="foto-wrapper">
+        <img src="foto.jpg" alt="Bas Wijnands" class="foto"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="foto-fallback">BW</div>
+      </div>
+
+      <!-- PERSONALIA -->
+      <h2 class="section-title">Personalia</h2>
+      <div class="contact-item">
+        <span class="contact-icon">✉</span>
+        <a href="mailto:bas.wijnands@itvit.nl">bas.wijnands@itvit.nl</a>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">✆</span>
+        <span>+31 6 835 693 18</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">⌖</span>
+        <span>Noordwijk</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">in</span>
+        <a href="https://linkedin.com/in/bas-w-839829189" target="_blank">linkedin.com/in/bas-w-839829189</a>
+      </div>
+
+      <!-- OPLEIDINGEN -->
+      <h2 class="section-title">Opleidingen</h2>
+      <div class="edu-item">
+        <div class="edu-degree">HBO Bachelor ICT</div>
+        <div class="edu-school">LOI, Leiden</div>
+        <div class="edu-year">2023</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-degree">MBO ICT Level 3</div>
+        <div class="edu-school">Leiden</div>
+        <div class="edu-year">2018 – 2020</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-degree">VMBO Basis</div>
+        <div class="edu-school">Andreas College, Katwijk</div>
+      </div>
+
+      <!-- CERTIFICERINGEN -->
+      <h2 class="section-title">Certificeringen</h2>
+      <div class="edu-item">
+        <div class="edu-degree">Cisco CCNA</div>
+        <div class="edu-school">Global Knowledge</div>
+        <div class="edu-year">Vernieuwd feb. 2026</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-degree">ITIL 4 Foundation</div>
+        <div class="edu-year">2023</div>
+      </div>
+
+      <!-- TALEN -->
+      <h2 class="section-title">Talen</h2>
+      <div class="lang-item">
+        <div class="lang-name">Nederlands</div>
+        <div class="lang-bar">
+          <div class="lang-dot filled"></div><div class="lang-dot filled"></div>
+          <div class="lang-dot filled"></div><div class="lang-dot filled"></div>
+          <div class="lang-dot filled"></div>
+        </div>
+      </div>
+      <div class="lang-item">
+        <div class="lang-name">Engels</div>
+        <div class="lang-bar">
+          <div class="lang-dot filled"></div><div class="lang-dot filled"></div>
+          <div class="lang-dot filled"></div><div class="lang-dot filled"></div>
+          <div class="lang-dot"></div>
+        </div>
+      </div>
+
+      <!-- VAARDIGHEDEN -->
+      <h2 class="section-title">Vaardigheden</h2>
+      <ul class="skill-list">
+        <li>Proactief</li>
+        <li>Probleemoplossend</li>
+        <li>Communicatief vaardig</li>
+        <li>Betrouwbaar</li>
+      </ul>
+
+      <!-- SOFTWARE & TECHNOLOGIE -->
+      <h2 class="section-title">Software &amp; Technologie</h2>
+      <div class="tech-tags">
+        <span class="tag">Access points</span>
+        <span class="tag">Amazon AWS</span>
+        <span class="tag">Azure</span>
+        <span class="tag">BGP</span>
+        <span class="tag">Cisco</span>
+        <span class="tag">Cloud infrastructure</span>
+        <span class="tag">Datacenter</span>
+        <span class="tag">Firewalls</span>
+        <span class="tag">Fortinet</span>
+        <span class="tag">IT Infrastructure</span>
+        <span class="tag">Jira</span>
+        <span class="tag">Network diagrams</span>
+        <span class="tag">Office 365</span>
+        <span class="tag">OSPF</span>
+        <span class="tag">SNMP</span>
+        <span class="tag">Topdesk</span>
+        <span class="tag">User Management</span>
+        <span class="tag">Veeam</span>
+        <span class="tag">Visio</span>
+        <span class="tag">VLANs</span>
+        <span class="tag">VPN</span>
+        <span class="tag">VRRP</span>
+        <span class="tag">Windows Server 2019</span>
+        <span class="tag">Wireless</span>
+        <span class="tag">Zabbix</span>
+      </div>
+
+    </aside>
+
+    <!-- ══════════════════════════════ RIGHT COLUMN ══════════════════════════════ -->
+    <main class="col-right">
+
+      <!-- NAAM & TITEL -->
+      <h1 class="cv-name">Bas <span>Wijnands</span></h1>
+      <div class="cv-title">System &amp; Network Engineer</div>
+
+      <!-- PROFIELTEKST -->
+      <p class="profile-text">
+        Ervaren System &amp; Network Engineer met ruim 10 jaar ervaring in netwerk-infrastructuur,
+        datacenter-beheer en cloud-oplossingen. Momenteel werkzaam bij KPN als Netwerk Engineer,
+        gespecialiseerd in grootschalige migraties en enterprise-netwerken. Op zoek naar uitdagende
+        projecten waarbij ik mijn expertise in Fortinet, Cisco en Azure optimaal inzet.
+      </p>
+
+      <!-- WERKERVARING -->
+      <h2 class="section-title werk-section">Werkervaring</h2>
+
+      <div class="werk-item">
+        <div class="werk-header">
+          <span class="werk-functie">Netwerk Engineer</span>
+          <span class="werk-periode">2023 – heden</span>
+        </div>
+        <div class="werk-bedrijf">KPN, Zoetermeer</div>
+        <ul class="werk-bullets">
+          <li>Netwerkdocumentatie gemaakt en onderhouden (diagrammen, configuraties)</li>
+          <li>HLD/LLD netwerkdiagrammen ontworpen: OSPF, VRRP, VLANs, SNMP</li>
+          <li>Interne netwerkinfrastructuur voor KPN-klanten geüpdatet en onderhouden</li>
+          <li>Datacenter-onderhoud en beveiligingsmaatregelen (Fortinet, Cisco Meraki)</li>
+          <li>Interne workflows verbeterd → <strong>+10% succesvolle implementaties</strong></li>
+          <li>Migratie van <strong>2500 Benelux-locaties</strong> begeleid met minimale verstoring</li>
+        </ul>
+      </div>
+
+      <div class="werk-item">
+        <div class="werk-header">
+          <span class="werk-functie">Global Infrastructure Specialist <em style="font-weight:400;font-style:normal;color:#888">| Freelance</em></span>
+          <span class="werk-periode">2022 – 2023</span>
+        </div>
+        <div class="werk-bedrijf">Varo Energy, Rotterdam</div>
+        <ul class="werk-bullets">
+          <li>Office 365 beheerd: updates en beveiliging tijdens relocatieproces</li>
+          <li>Remote Desktop Services beheerd via VMware-cloudplatform</li>
+          <li>Cisco Meraki Wireless en Fortinet firewalls geconfigureerd en onderhouden</li>
+          <li>Windows Server 2019/2016 geïmplementeerd en beheerd</li>
+          <li>Azure Cloud infrastructuur geleid voor organisatiebrede schaalbaarheid</li>
+          <li>Topdesk en Jira gebruikt voor 1e-lijn support en projectmanagement (ITIL)</li>
+        </ul>
+      </div>
+
+      <div class="werk-item">
+        <div class="werk-header">
+          <span class="werk-functie">Netwerk Specialist <em style="font-weight:400;font-style:normal;color:#888">| Freelance</em></span>
+          <span class="werk-periode">2021 – 2022</span>
+        </div>
+        <div class="werk-bedrijf">Hoyng Rokh Monegier, Amsterdam</div>
+        <ul class="werk-bullets">
+          <li>Nieuw datacenterontwerp ontwikkeld → <strong>+30% rackruimte &amp; koelingsefficiëntie</strong></li>
+          <li>Netwerkarchitectuur ontworpen (HLD/LLD) inclusief cloudinfrastructuur</li>
+          <li>Netwerkprestaties beoordeeld, knelpunten geïdentificeerd en opgelost</li>
+          <li>Routers, switches en firewalls geconfigureerd en beheerd</li>
+          <li>Stakeholdermanagement: verwachtingen en budgettering afgestemd met IT-manager</li>
+          <li>Training en ondersteuning geboden aan IT-personeel en eindgebruikers</li>
+        </ul>
+      </div>
+
+      <div class="werk-item">
+        <div class="werk-header">
+          <span class="werk-functie">Manager IT Infrastructure</span>
+          <span class="werk-periode">2020 – 2021</span>
+        </div>
+        <div class="werk-bedrijf">GoFlow Technology, Sassenheim</div>
+        <ul class="werk-bullets">
+          <li>Infrastructuurstrategie ontwikkeld, geïmplementeerd en afgestemd op bedrijfsdoelen</li>
+          <li>Migratie Office 365/Exchange → Google Workspace geleid</li>
+          <li>Azure-cloudservers beheerd; Remote Desktop Services en Ubiquiti/Unifi geïmplementeerd</li>
+          <li>Apparaat- en applicatiebeveiliging via Intune en SCCM</li>
+          <li>Zabbix geïmplementeerd voor proactieve netwerk- en servermonitoring</li>
+          <li>Team IT-professionals aangestuurd en samengewerkt met externe partners</li>
+        </ul>
+      </div>
+
+      <div class="werk-item">
+        <div class="werk-header">
+          <span class="werk-functie">Teamleider Installatie &amp; Service <em style="font-weight:400;font-style:normal;color:#888">| Sysadmin</em></span>
+          <span class="werk-periode">2019 – 2020</span>
+        </div>
+        <div class="werk-bedrijf">Plugwise, Sassenheim</div>
+        <ul class="werk-bullets">
+          <li>Installatie- en serviceteam aangestuurd en getraind</li>
+          <li>Migratieprojecten begeleid: Office 365 → Google Workspace, Exchange Online</li>
+          <li>Primaire klantcontact voor 1e-lijn support</li>
+          <li>Google Workspace, Azure, Intune en SCCM geconfigureerd en beheerd</li>
+          <li>Remote Desktop Servers en Ubiquiti/Unifi Access Points onderhouden</li>
+        </ul>
+      </div>
+
+      <div class="werk-item">
+        <div class="werk-header">
+          <span class="werk-functie">Technical Service Engineer</span>
+          <span class="werk-periode">2016 – 2019</span>
+        </div>
+        <div class="werk-bedrijf">PWA Computers, Noordwijkerhout</div>
+        <ul class="werk-bullets">
+          <li>2e-lijnssupport: hardware, software en netwerksystemen</li>
+          <li>Hardware samengesteld in servers en desktops</li>
+          <li>Office 365-omgevingen opgezet en gemigreerd</li>
+          <li>IT-omgeving proactief gemonitord</li>
+          <li>Back-ups ingesteld en gevalideerd met Veeam</li>
+        </ul>
+      </div>
+
+    </main>
+  </div>
+</body>
+</html>
