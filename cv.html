@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bas Wijnands — System &amp; Network Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -196,7 +197,6 @@
     .werk-section { margin-bottom: 0.2rem; }
     .werk-item {
       margin-bottom: 1.1rem;
-      page-break-inside: avoid;
     }
     .werk-header {
       display: flex;
@@ -209,6 +209,11 @@
       font-weight: 700;
       font-size: 0.88rem;
       color: var(--dark);
+    }
+    .werk-label {
+      font-weight: 400;
+      font-style: normal;
+      color: #888;
     }
     .werk-periode {
       font-size: 0.72rem;
@@ -437,7 +442,7 @@
 
       <div class="werk-item">
         <div class="werk-header">
-          <span class="werk-functie">Global Infrastructure Specialist <em style="font-weight:400;font-style:normal;color:#888">| Freelance</em></span>
+          <span class="werk-functie">Global Infrastructure Specialist <em class="werk-label">| Freelance</em></span>
           <span class="werk-periode">2022 – 2023</span>
         </div>
         <div class="werk-bedrijf">Varo Energy, Rotterdam</div>
@@ -453,7 +458,7 @@
 
       <div class="werk-item">
         <div class="werk-header">
-          <span class="werk-functie">Netwerk Specialist <em style="font-weight:400;font-style:normal;color:#888">| Freelance</em></span>
+          <span class="werk-functie">Netwerk Specialist <em class="werk-label">| Freelance</em></span>
           <span class="werk-periode">2021 – 2022</span>
         </div>
         <div class="werk-bedrijf">Hoyng Rokh Monegier, Amsterdam</div>
@@ -485,7 +490,7 @@
 
       <div class="werk-item">
         <div class="werk-header">
-          <span class="werk-functie">Teamleider Installatie &amp; Service <em style="font-weight:400;font-style:normal;color:#888">| Sysadmin</em></span>
+          <span class="werk-functie">Teamleider Installatie &amp; Service <em class="werk-label">| Sysadmin</em></span>
           <span class="werk-periode">2019 – 2020</span>
         </div>
         <div class="werk-bedrijf">Plugwise, Sassenheim</div>
